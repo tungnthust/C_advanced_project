@@ -1,14 +1,14 @@
-var text;
-var hanoi;
+var distanceMatrix_text;
 var map;
 var latitude;
 var longitude;
 var coords;
-var array;
+var distanceMatrix;
 var i, j;
 
 // Initialize and add the map
 function initMap() {
+  var hanoi;
   hanoi = { lat: 21.0278, lng: 105.8342 };
   map = new google.maps.Map(document.getElementById("map"), {
     zoom: 13,
@@ -100,13 +100,13 @@ async function displayRoutes() {
 }
 
 // 2D array for Distance Matrix
-array = new Array(40);
+distanceMatrix = new Array(40);
 // Convert matrix to string for download as file later
-text = "";
+distanceMatrix_text = "";
 var iter1, iter2;
 
 for (i = 0; i < 40; i++) {
-  array[i] = new Array(40);
+  distanceMatrix[i] = new Array(40);
 }
 
 // Get distance matrix
@@ -138,7 +138,7 @@ const getDist = (iter1, iter2, count) => {
               if (element.distance.text.split(" ")[1] == "m") {
                 distance = 0;
               }
-              array[5 * iter1 + i][20 * iter2 + j] = distance;
+              distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
             }
           }
         } else {
@@ -181,19 +181,18 @@ function download(filename, text) {
 document.getElementById("dwn-btn").addEventListener(
   "click",
   function () {
-    var text = "";
     var a;
     var b;
     for (a = 0; a < 40; a++) {
       for (b = 0; b < 40; b++) {
-        text = text + array[a][b] + " ";
+        distanceMatrix_text = distanceMatrix_text + distanceMatrix[a][b] + " ";
       }
-      text = text + "\r\n";
+      distanceMatrix_text = distanceMatrix_text + "\r\n";
     }
     // Generate download of hello.txt file with some content
     var filename = "distanceMatrix.txt";
 
-    download(filename, text);
+    download(filename, distanceMatrix_text);
   },
   false
 );
