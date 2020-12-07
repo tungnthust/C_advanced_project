@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <title>VRP</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwLFuSQ48tQEMP8MWcUU3mdROw0_PZE2U&callback=initMap">
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+    <div>
+        <input type='button' value="Get Places and Display" onclick="getPlacesAndDisplay()"></input>
+    </div>
+    <div>
+        <input type='button' value="Get Distance Matrix" onclick="getDistanceMatrix()"></input>
+    </div>
+    <div>
+        <input type='button' value="Display all Routes" onclick="displayRoutes()"></input>
+    </div>
+    <input type="button" id="dwn-btn" value="Download file Distance Matrix"/>
+    <script src="script.js"></script>
+</body>
+</html>
