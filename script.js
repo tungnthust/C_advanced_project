@@ -127,7 +127,6 @@ const getDist = (iter1, iter2, count) => {
         if (status == "OK") {
           console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
           var origins = response.originAddresses;
-          var destinations = response.destinationAddresses;
           for (var i = 0; i < origins.length; i++) {
             var results = response.rows[i].elements;
             for (var j = 0; j < results.length; j++) {
@@ -189,7 +188,6 @@ document.getElementById("dwn-btn").addEventListener(
       }
       distanceMatrix_text = distanceMatrix_text + "\r\n";
     }
-    // Generate download of hello.txt file with some content
     var filename = "distanceMatrix.txt";
 
     download(filename, distanceMatrix_text);
