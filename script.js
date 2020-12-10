@@ -92,7 +92,7 @@ const getDirection = (i, j) => {
 };
 
 async function displayRoutes() {
-  for (i = 0; i < 4; t++) {
+  for (i = 0; i < 4; i++) {
     for (j = 0; j < route[i].length - 1; j++) {
       const x = await getDirection(i, j);
     }
@@ -114,7 +114,7 @@ const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const getDist = (iter1, iter2, count) => {
+const getDist = (iter1, iter2) => {
   return sleep(15000).then((v) => {
     var service = new google.maps.DistanceMatrixService();
     service.getDistanceMatrix(
@@ -124,25 +124,28 @@ const getDist = (iter1, iter2, count) => {
         travelMode: "DRIVING",
       },
       function (response, status) {
-        if (status == "OK") {
-          console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
-          var origins = response.originAddresses;
-          for (var i = 0; i < origins.length; i++) {
-            var results = response.rows[i].elements;
-            for (var j = 0; j < results.length; j++) {
-              var element = results[j];
-              var distance = parseFloat(
-                element.distance.text.split(" ")[0].replace(",", ".")
-              );
-              if (element.distance.text.split(" ")[1] == "m") {
-                distance = 0;
+        do {
+          if (status == "OK") {
+            console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
+            var origins = response.originAddresses;
+            for (var i = 0; i < origins.length; i++) {
+              var results = response.rows[i].elements;
+              for (var j = 0; j < results.length; j++) {
+                var element = results[j];
+                var distance = parseFloat(
+                  element.distance.text.split(" ")[0].replace(",", ".")
+                );
+                if (element.distance.text.split(" ")[1] == "m") {
+                  distance = 0;
+                }
+                distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
               }
-              distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
             }
+          } else {
+            console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
           }
-        } else {
-          console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
-        }
+
+        } while(status != "OK");
       }
     );
   });
@@ -152,7 +155,7 @@ async function getDistanceMatrix() {
   try {
     for (iter1 = 0; iter1 < 8; iter1++) {
       for (iter2 = 0; iter2 < 2; iter2++) {
-        const x = await getDist(iter1, iter2, count);
+        const x = await getDist(iter1, iter2);
       }
     }
   } catch (error) {
