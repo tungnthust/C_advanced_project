@@ -8,12 +8,11 @@
 #define ROW 3
 #define INFINITE 10000
 
+int subset[1000000];
 int dist[m * n][m * n];
-int path[m * n + 1][m * n];
-int memo[m * n][200];
-int minimum = 999;
+short memo[m * n][11000000];
 int indx = -1;
-int matrix[25][25], visited_cities[10], limit, cost = 0;
+int matrix[50][50];
 int sum(int a[], int size);
 int findMinCost(int start, int num_node);
 int *findOptimalTour(int start, int num_node);
@@ -24,13 +23,13 @@ int notIn(int start, int subset);
 int factorial(int a);
 void combination(int set, int at, int r, int num_node, int *subset);
 int *combinations(int r, int num_node, int size);
-void swap(int *a, int *b);
-void permutation(int a[], int size, int l, int r, int *vertices, int *res);
 void distanceMatrix(int a[m][n]);
 
 int main()
 {
-
+    // for(int i = 0; i < m*n; i++) {
+    //     memo[i] = malloc(sizeof(int) * 1000);
+    // }
     // int* a = combinations(3, 4);
     // for (int i = 0; i < 4; i++) {
     //     printf("%d ", a[i]);
@@ -51,37 +50,36 @@ int main()
             printf("%-3d", dist[i][j]);
         printf("\n");
     }
-    limit = 5;
-    int vertices[5] = {3, 5, 26, 23, 12};
+    int vertices[22] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
 
     printf("\nFind shortest path to pick all items at nodes:\n3, 5, 26, 23, 12.\n");
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 22; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 22; j++)
         {
             matrix[i][j] = dist[vertices[i]][vertices[j]];
         }
     }
 
     printf("Distance Matrix between 5 nodes:\n3, 5, 26, 23, 12.\n\n");
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 22; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 22; j++)
             printf("%-3d", matrix[i][j]);
         printf("\n");
     }
 
-    setup(3, 5);
-    solve(3, 5);
-    int *tour = findOptimalTour(3, 5);
+    setup(0, 22);    
+    solve(0, 22);
+    int *tour = findOptimalTour(0, 22);
     printf("\nPath: \n");
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 23; i++)
     {
         printf("%d ", vertices[tour[i]]);
     }
 
-    printf("\nMincost: %d", sum(tour, 6));
+    printf("\nMincost: %d", sum(tour, 23));
 }
 
 int sum(int a[], int size)
@@ -109,7 +107,7 @@ int findMinCost(int start, int num_node)
     return minTourCost;
 }
 
-int *findOptimalTour(int start, int num_node)
+int* findOptimalTour(int start, int num_node)
 {
     int lastIndex = start;
     int state = (1 << num_node) - 1; //End of state
@@ -160,26 +158,34 @@ void setup(int start, int num_node)
 void solve(int start, int num_node)
 {
     int size;
-    int *subset;
     int state;
     int minDist;
     int newDistance;
     for (int r = 3; r <= num_node; r++)
     {
         size = factorial(num_node) / (factorial(r) * factorial(num_node - r));
-        subset = combinations(r, num_node, size);
+        // printf("\nr = %d", r);
+        // printf("\n------------size=%d", size);
+        // printf("creat");
+        // int* subset = (int*) malloc(sizeof(int) * size);
+        // printf("FAILLLLLL");
+        combination(0, 0, r, num_node, subset);
+        indx = 0;
         for (int i = 0; i < size; i++)
         {
+            // printf("\ni = %d", i);
             if (notIn(start, subset[i]))
                 continue;
             for (int next = 0; next < num_node; next++)
             {
+                // printf("\nnext = %d", next);
                 if (next == start || notIn(next, subset[i]))
                     continue;
                 state = subset[i] ^ (1 << next);
                 minDist = INFINITE;
                 for (int e = 0; e < num_node; e++)
                 {
+                    // printf("\ne = %d", e);
                     if (e == start || e == next || notIn(e, subset[i]))
                         continue;
                     newDistance = memo[e][state] + matrix[e][next];
@@ -189,6 +195,8 @@ void solve(int start, int num_node)
                 memo[next][subset[i]] = minDist;
             }
         }
+        // free(subset);
+        // subset = NULL;
     }
 }
 
@@ -222,13 +230,14 @@ void combination(int set, int at, int r, int num_node, int *subset)
     }
 }
 
-int *combinations(int r, int num_node, int size)
-{
-    int *subset = malloc(sizeof(int) * size);
-    combination(0, 0, r, num_node, subset);
-    indx = 0;
-    return subset;
-}
+// int *combinations(int r, int num_node, int size)
+// {
+//     printf("creat");
+//     int *subset = malloc(sizeof(int) * size);
+//     combination(0, 0, r, num_node, subset);
+//     indx = 0;
+//     return subset;
+// }
 
 void distanceMatrix(int a[m][n])
 {
