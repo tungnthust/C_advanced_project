@@ -5,6 +5,8 @@ var longitude;
 var coords;
 var distanceMatrix;
 var i, j;
+// Requiring fs module in which readFile function is defined
+const fs = require('fs');
 
 // Initialize and add the map
 function initMap() {
@@ -117,39 +119,42 @@ const sleep = (ms) => {
 const getDist = (iter1, iter2, count) => {
   return sleep(15000).then((v) => {
     var service = new google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-      {
-        origins: coords.slice(5 * iter1, 5 * (iter1 + 1)),
-        destinations: coords.slice(20 * iter2, 20 * (iter2 + 1)),
-        travelMode: "DRIVING",
-      },
-      function (response, status) {
-        if (status == "OK") {
-          console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
-          var origins = response.originAddresses;
-          for (var i = 0; i < origins.length; i++) {
-            var results = response.rows[i].elements;
-            for (var j = 0; j < results.length; j++) {
-              var element = results[j];
-              var distance = parseFloat(
-                element.distance.text.split(" ")[0].replace(",", ".")
-              );
-              if (element.distance.text.split(" ")[1] == "m") {
-                distance = 0;
+    do {
+      service.getDistanceMatrix(
+        {
+          origins: coords.slice(5 * iter1, 5 * (iter1 + 1)),
+          destinations: coords.slice(20 * iter2, 20 * (iter2 + 1)),
+          travelMode: "DRIVING",
+        },
+        function (response, status) {
+          if (status == "OK") {
+            console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
+            var origins = response.originAddresses;
+            for (var i = 0; i < origins.length; i++) {
+              var results = response.rows[i].elements;
+              for (var j = 0; j < results.length; j++) {
+                var element = results[j];
+                var distance = parseFloat(
+                  element.distance.text.split(" ")[0].replace(",", ".")
+                  );
+                  if (element.distance.text.split(" ")[1] == "m") {
+                    distance = 0;
+                  }
+                  distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
+                }
               }
-              distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
+            } else {
+              console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
             }
           }
-        } else {
-          console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
-        }
-      }
-    );
+          );
+        } while (status !== "OK");
   });
 };
 
 async function getDistanceMatrix() {
   try {
+    let count;
     for (iter1 = 0; iter1 < 8; iter1++) {
       for (iter2 = 0; iter2 < 2; iter2++) {
         const x = await getDist(iter1, iter2, count);
@@ -194,3 +199,13 @@ document.getElementById("dwn-btn").addEventListener(
   },
   false
 );
+
+// Read output file from C
+// let newRoute = new Array(3);
+// file_from_C = "demo_output_from_C.txt";
+// let text = fs.readFileSync("./demo_output_from_C.txt", "utf8");
+// let 
+// // fs.readFile(file_from_C, 'utf8', (err, data) => {
+// //   if (err) throw err;
+// //   console.log(data);
+// })
