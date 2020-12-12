@@ -94,7 +94,7 @@ const getDirection = (i, j) => {
 };
 
 async function displayRoutes() {
-  for (i = 0; i < 4; t++) {
+  for (i = 0; i < 4; i++) {
     for (j = 0; j < route[i].length - 1; j++) {
       const x = await getDirection(i, j);
     }
@@ -116,9 +116,10 @@ const sleep = (ms) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const getDist = (iter1, iter2, count) => {
+const getDist = (iter1, iter2) => {
   return sleep(15000).then((v) => {
     var service = new google.maps.DistanceMatrixService();
+<<<<<<< HEAD
     do {
       service.getDistanceMatrix(
         {
@@ -127,6 +128,16 @@ const getDist = (iter1, iter2, count) => {
           travelMode: "DRIVING",
         },
         function (response, status) {
+=======
+    service.getDistanceMatrix(
+      {
+        origins: coords.slice(5 * iter1, 5 * (iter1 + 1)),
+        destinations: coords.slice(20 * iter2, 20 * (iter2 + 1)),
+        travelMode: "DRIVING",
+      },
+      function (response, status) {
+        do {
+>>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
           if (status == "OK") {
             console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
             var origins = response.originAddresses;
@@ -136,6 +147,7 @@ const getDist = (iter1, iter2, count) => {
                 var element = results[j];
                 var distance = parseFloat(
                   element.distance.text.split(" ")[0].replace(",", ".")
+<<<<<<< HEAD
                   );
                   if (element.distance.text.split(" ")[1] == "m") {
                     distance = 0;
@@ -145,10 +157,27 @@ const getDist = (iter1, iter2, count) => {
               }
             } else {
               console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
+=======
+                );
+                if (element.distance.text.split(" ")[1] == "m") {
+                  distance = 0;
+                }
+                distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
+              }
+>>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
             }
+          } else {
+            console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
           }
+<<<<<<< HEAD
           );
         } while (status !== "OK");
+=======
+
+        } while(status != "OK");
+      }
+    );
+>>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
   });
 };
 
@@ -157,7 +186,7 @@ async function getDistanceMatrix() {
     let count;
     for (iter1 = 0; iter1 < 8; iter1++) {
       for (iter2 = 0; iter2 < 2; iter2++) {
-        const x = await getDist(iter1, iter2, count);
+        const x = await getDist(iter1, iter2);
       }
     }
   } catch (error) {
