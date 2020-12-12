@@ -119,16 +119,6 @@ const sleep = (ms) => {
 const getDist = (iter1, iter2) => {
   return sleep(15000).then((v) => {
     var service = new google.maps.DistanceMatrixService();
-<<<<<<< HEAD
-    do {
-      service.getDistanceMatrix(
-        {
-          origins: coords.slice(5 * iter1, 5 * (iter1 + 1)),
-          destinations: coords.slice(20 * iter2, 20 * (iter2 + 1)),
-          travelMode: "DRIVING",
-        },
-        function (response, status) {
-=======
     service.getDistanceMatrix(
       {
         origins: coords.slice(5 * iter1, 5 * (iter1 + 1)),
@@ -137,7 +127,6 @@ const getDist = (iter1, iter2) => {
       },
       function (response, status) {
         do {
->>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
           if (status == "OK") {
             console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " OK");
             var origins = response.originAddresses;
@@ -147,37 +136,20 @@ const getDist = (iter1, iter2) => {
                 var element = results[j];
                 var distance = parseFloat(
                   element.distance.text.split(" ")[0].replace(",", ".")
-<<<<<<< HEAD
-                  );
-                  if (element.distance.text.split(" ")[1] == "m") {
-                    distance = 0;
-                  }
-                  distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
-                }
-              }
-            } else {
-              console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
-=======
                 );
                 if (element.distance.text.split(" ")[1] == "m") {
                   distance = 0;
                 }
                 distanceMatrix[5 * iter1 + i][20 * iter2 + j] = distance;
               }
->>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
             }
           } else {
             console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
           }
-<<<<<<< HEAD
-          );
-        } while (status !== "OK");
-=======
 
         } while(status != "OK");
       }
     );
->>>>>>> 568f75d05019acd4b8a673ad0ad5099ff7626bc7
   });
 };
 
@@ -230,11 +202,13 @@ document.getElementById("dwn-btn").addEventListener(
 );
 
 // Read output file from C
-// let newRoute = new Array(3);
-// file_from_C = "demo_output_from_C.txt";
-// let text = fs.readFileSync("./demo_output_from_C.txt", "utf8");
-// let 
-// // fs.readFile(file_from_C, 'utf8', (err, data) => {
-// //   if (err) throw err;
-// //   console.log(data);
-// })
+let text = fs.readFileSync("./output_from_C_program.txt", 'utf-8');
+let lines = text.split('\n')
+var newRoute = new Array();
+for(let line = 0; line < lines.length; line++) {
+    let nodes = lines[line].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+    newRoute[line] = new Array();
+    for (let node = 0; node < nodes.length; node++) {
+        newRoute[line][node] = parseInt(nodes[node]);
+    }
+}
