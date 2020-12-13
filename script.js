@@ -5,6 +5,7 @@ var longitude;
 var coords;
 var distanceMatrix;
 var i, j;
+var countRoute = 4;
 
 // Initialize and add the map
 function initMap() {
@@ -55,8 +56,7 @@ function getPlacesAndDisplay() {
   }
 }
 
-// Route of each vehicle
-var route = new Array(4);
+var route = new Array();
 // route[0] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 // route[1] = [0, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 0];
 // route[2] = [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 0];
@@ -92,7 +92,7 @@ const getDirection = (i, j) => {
 };
 
 async function displayRoutes() {
-  for (i = 0; i < 4; i++) {
+  for (i = 0; i < countRoute; i++) {
     for (j = 0; j < route[i].length - 1; j++) {
       const x = await getDirection(i, j);
     }
@@ -205,6 +205,7 @@ input.addEventListener('change', function(e) {
   const reader = new FileReader();
   reader.onload = function(){
       let lines = reader.result.split('\n');
+      countRoute = lines.length;
       for (let line=0; line<lines.length; line++){
         let nodes = lines[line].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
         route[line] = new Array();          
@@ -216,3 +217,4 @@ input.addEventListener('change', function(e) {
   reader.readAsText(input.files[0]);
 }
 , false)
+
