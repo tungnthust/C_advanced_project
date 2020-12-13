@@ -5,8 +5,6 @@ var longitude;
 var coords;
 var distanceMatrix;
 var i, j;
-// Requiring fs module in which readFile function is defined
-const fs = require('fs');
 
 // Initialize and add the map
 function initMap() {
@@ -59,10 +57,10 @@ function getPlacesAndDisplay() {
 
 // Route of each vehicle
 var route = new Array(4);
-route[0] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
-route[1] = [0, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 0];
-route[2] = [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 0];
-route[3] = [0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0];
+// route[0] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
+// route[1] = [0, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 0];
+// route[2] = [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 0];
+// route[3] = [0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0];
 // Color for each route
 var color = ["blue", "red", "green", "yellow"];
 
@@ -147,7 +145,7 @@ const getDist = (iter1, iter2) => {
             console.log("Iter1: " + iter1 + " Iter2: " + iter2 + " " + status);
           }
 
-        } while(status != "OK");
+        } while(status !== "OK");
       }
     );
   });
@@ -202,13 +200,19 @@ document.getElementById("dwn-btn").addEventListener(
 );
 
 // Read output file from C
-let text = fs.readFileSync("./output_from_C_program.txt", 'utf-8');
-let lines = text.split('\n')
-var newRoute = new Array();
-for(let line = 0; line < lines.length; line++) {
-    let nodes = lines[line].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
-    newRoute[line] = new Array();
-    for (let node = 0; node < nodes.length; node++) {
-        newRoute[line][node] = parseInt(nodes[node]);
-    }
+const input = document.querySelector('input[type="file"]');
+input.addEventListener('change', function(e) {
+  const reader = new FileReader();
+  reader.onload = function(){
+      let lines = reader.result.split('\n');
+      for (let line=0; line<lines.length; line++){
+        let nodes = lines[line].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+        route[line] = new Array();          
+        for (let node = 0; node < nodes.length; node++) {
+          route[line][node] = parseInt(nodes[node]);
+        }
+      }
+  }
+  reader.readAsText(input.files[0]);
 }
+, false)
