@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="./style.css" />
-    <title>VRP</title>
-</head>
-<body>
-    <canvas id="myCanvas" width="1260" height="660" style="border:1px solid #d3d3d3;">
-        Your browser does not support the HTML5 canvas tag.</canvas>
-        
-    <script>
-    var c = document.getElementById("myCanvas");
-    var i = 0;
-    var x = 60;
-    for (i = 0; i < 10; i++) {
-            ctx = c.getContext("2d");
-            ctx.fillStyle = "#285e9c";
-            ctx.fillRect(x, 20, 30, 600);
-            ctx = c.getContext("2d");
-            ctx.fillStyle = "#598a1d";
-            ctx.fillRect(x + 30, 20, 30, 600);
-            x = x + 120;
-    }
-    var points = [14, 17, 25, 53, 22, 8, 65, 31];
-    var coordX, coordY;
-    
-    for (i = 0; i < points.length; i++) {
-        if (points[i] % 2 == 0) {
-            coordX = (points[i] % 10 + 1) * 60 + 15;
-        } else {
-            coordX = (points[i] % 10 + 1) * 60 - 15;
-        }
-        coordY = 50 + Math.floor(points[i]/10) * 60 ;
-        ctx.beginPath();
-        ctx.arc(coordX, coordY, 5, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-        ctx.closePath();
+    <title>DEPOT</title>
+  </head>
+  <body>
+    <div id="entry"><h4>Entry</h4></div>
+    <canvas
+      id="myCanvas"
+      width="1260"
+      height="660"
+      style="border: 1px solid #d3d3d3"
+    >
+      Your browser does not support the HTML5 canvas tag.</canvas
+    >
+    <div>
+      <input type='button' value="Display all Routes" onclick="displayPath()"></input>
+    </div>
 
-    }
+    <script src="sript.js">
+      
     </script>
-</body>
+  </body>
 </html>
