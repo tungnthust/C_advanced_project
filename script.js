@@ -45,19 +45,38 @@ function getPlacesAndDisplay() {
   }
 
   function addMarker(coords, weight) {
+    var contentString = "<h1>" + weight + " kg</h1>"
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString,
+    });
+
     var marker = new google.maps.Marker({
       position: coords,
       map: map,
-      title: weight.toString() + " kg",
+      // title: weight.toString() + " kg",
+    });
+
+    marker.addListener("click", () => {
+      infowindow.open(map, marker);
     });
   }
   
   function addMarkerDepot(coords, weight) {
+    var contentString = "<h1>" + weight + " kg</h1>"
+
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString,
+    });
+
     var marker = new google.maps.Marker({
       position: coords,
       map: map,
-      title: weight.toString() + " kg",
       icon: "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png",
+    });
+
+    marker.addListener("click", () => {
+      infowindow.open(map, marker);
     });
   }
 }
