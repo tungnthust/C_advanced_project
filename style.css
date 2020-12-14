@@ -1,4 +1,24 @@
+html{
+  font-size: 62.5%;
+}
+
+body{
+  font-size: 1.6rem;
+}
+
 #map {
-  height: 800px;
+  height: 750px;
   width: 100%;
+}
+
+h3{
+  text-align: center;
+}
+
+.box{
+  width: 25rem;
+  height: 5rem;
+  margin: 1.5rem;
+  border-radius: 5px;
+  font-size: 1.5rem;
 }
