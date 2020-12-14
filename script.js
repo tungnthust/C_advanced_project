@@ -32,17 +32,17 @@ function getPlacesAndDisplay() {
   
   coords = new Array(40);
   //Coordinate and weight of depot 
-  coords[0] = { lat: 21.0278, lng: 105.8342 };
+  coords[0] = { lat: 21.002666, lng: 105.833105 };
   weight[0] = parseFloat((Math.random() * 2).toFixed(2))
 
   for (i = 1; i <= 39; i++) {
     coords[i] = { lat: latitude[i - 1], lng: longitude[i - 1] };
-    weight[i] = parseFloat((Math.random() * 2).toFixed(2));
+    weight[i] = parseFloat((Math.random() * 1.5 + 0.5).toFixed(2));
 
   }
   addMarkerDepot(coords[0], weight[0]);
   // Display all places
-  for (i = 1; i < 40; i++) {
+  for (i = 1; i < 24; i++) {
     addMarker(coords[i], weight[i]);
   }
 
@@ -90,10 +90,10 @@ var route = new Array();
 // route[3] = [0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0];
 
 // Color for each route
-var color = ["blue", "red", "green", "yellow"];
+var color = ["red", "blue", "green", "yellow"];
 
 const getDirection = (i, j) => {
-  return sleep(5000).then((v) => {
+  return sleep(500).then((v) => {
     let directionsService = new google.maps.DirectionsService();
     let directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(map);
@@ -118,11 +118,20 @@ const getDirection = (i, j) => {
     );
   });
 };
+var c = 0, d = 0;
+function displayRoute() {
+  getDirection(c, d);
+  d = d + 1;
+  if (d == route[c].length - 1) {
+    c = c + 1;
+    d = 0;
+  }
+}
 
 async function displayRoutes() {
-  for (i = 0; i < countRoute; i++) {
-    for (j = 0; j < route[i].length - 1; j++) {
-      const x = await getDirection(i, j);
+  for (c = 0; c < countRoute; c++) {
+    for (d = 0; d < route[c].length - 1; d++) {
+      const x = await getDirection(c, d);
     }
   }
 }
@@ -211,7 +220,8 @@ function download(filename, text) {
 // Start file download.
 document.getElementById("dwn-btn").addEventListener(
   "click",
-  function () {
+  function (e) {
+    e.preventDefault();
     var a;
     var b;
     for (a = 0; a < 40; a++) {
@@ -227,9 +237,11 @@ document.getElementById("dwn-btn").addEventListener(
   },
   false
   );
+
   document.getElementById("dwn-dd").addEventListener(
     "click",
-    function () {
+    function (e) {
+      e.preventDefault();
       for (let i = 0; i < 40; i++) {
         node_data_text = node_data_text + i + " " + weight[i] + "\r\n";
       }
