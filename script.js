@@ -20,37 +20,43 @@ function initMap() {
 function getPlacesAndDisplay() {
   latitude = new Array(39);
   longitude = new Array(39);
-
+  weight = new Array(40);
+  
   //Random coordinates
   for (i = 0; i < 39; i++) {
     latitude[i] = parseFloat((Math.random() * 0.068 + 20.975).toFixed(4));
     longitude[i] = parseFloat((Math.random() * 0.094 + 105.77).toFixed(4));
   }
-
+  
   coords = new Array(40);
-  //Coordinate of depot
+  //Coordinate and weight of depot 
   coords[0] = { lat: 21.0278, lng: 105.8342 };
+  weight[0] = parseFloat((Math.random() * 2).toFixed(2))
 
   for (i = 1; i <= 39; i++) {
     coords[i] = { lat: latitude[i - 1], lng: longitude[i - 1] };
+    weight[i] = parseFloat((Math.random() * 2).toFixed(2));
+
   }
-  addMarkerDepot(coords[0]);
+  addMarkerDepot(coords[0], weight[0]);
   // Display all places
   for (i = 1; i < 40; i++) {
-    addMarker(coords[i]);
+    addMarker(coords[i], weight[i]);
   }
 
-  function addMarker(coords) {
+  function addMarker(coords, weight) {
     var marker = new google.maps.Marker({
       position: coords,
       map: map,
+      title: weight.toString() + " kg",
     });
   }
-
-  function addMarkerDepot(coords) {
+  
+  function addMarkerDepot(coords, weight) {
     var marker = new google.maps.Marker({
       position: coords,
       map: map,
+      title: weight.toString() + " kg",
       icon: "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png",
     });
   }
@@ -61,6 +67,7 @@ var route = new Array();
 // route[1] = [0, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 0];
 // route[2] = [0, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 0];
 // route[3] = [0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0];
+
 // Color for each route
 var color = ["blue", "red", "green", "yellow"];
 
