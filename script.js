@@ -6,6 +6,8 @@ var coords;
 var distanceMatrix;
 var i, j;
 var countRoute = 4;
+var node_data_text;
+var weight = new Array(40);
 
 // Initialize and add the map
 function initMap() {
@@ -20,7 +22,7 @@ function initMap() {
 function getPlacesAndDisplay() {
   latitude = new Array(39);
   longitude = new Array(39);
-  weight = new Array(40);
+
   
   //Random coordinates
   for (i = 0; i < 39; i++) {
@@ -221,9 +223,21 @@ document.getElementById("dwn-btn").addEventListener(
     var filename = "distanceMatrix.txt";
 
     download(filename, distanceMatrix_text);
+
   },
   false
-);
+  );
+  document.getElementById("dwn-dd").addEventListener(
+    "click",
+    function () {
+      for (let i = 0; i < 40; i++) {
+        node_data_text = node_data_text + i + " " + weight[i] + "\r\n";
+      }
+      var filename2 = "node_data.txt";
+      download(filename2, node_data_text);
+    },
+    false
+)
 
 // Read output file from C
 const input = document.querySelector('input[type="file"]');
