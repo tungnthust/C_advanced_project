@@ -2,15 +2,16 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define m 5
-#define n 6
-#define COL 1
-#define ROW 3
+#define m 20
+#define n 11
+#define g 5
+#define COL 26
+#define ROW 60
 #define INFINITE 10000
 
 int subset[1000000];
 int dist[m * n][m * n];
-short memo[m * n][11000000];
+short memo[m * n][1100000];
 int indx = -1;
 int matrix[50][50];
 int sum(int a[], int size);
@@ -27,19 +28,27 @@ void distanceMatrix(int a[m][n]);
 
 int main()
 {
-    // for(int i = 0; i < m*n; i++) {
-    //     memo[i] = malloc(sizeof(int) * 1000);
-    // }
-    // int* a = combinations(3, 4);
-    // for (int i = 0; i < 4; i++) {
-    //     printf("%d ", a[i]);
-    // }
-    int a[5][6] = {
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0},
+    int a[20][11] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},  
     };
     distanceMatrix(a);
     printf("Distance Matrix of all nodes: \n");
@@ -47,39 +56,39 @@ int main()
     for (int i = 0; i < m * n; i++)
     {
         for (int j = 0; j < m * n; j++)
-            printf("%-3d", dist[i][j]);
+            printf("%-10d", dist[i][j]);
         printf("\n");
     }
-    int vertices[22] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21};
+    int vertices[20] = {0, 96, 19, 58, 119, 189, 153, 78, 123, 204, 62, 42, 174, 69, 112, 35, 140, 85, 199, 100};
 
     printf("\nFind shortest path to pick all items at nodes:\n3, 5, 26, 23, 12.\n");
 
-    for (int i = 0; i < 22; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 22; j++)
+        for (int j = 0; j < 20; j++)
         {
             matrix[i][j] = dist[vertices[i]][vertices[j]];
         }
     }
 
     printf("Distance Matrix between 5 nodes:\n3, 5, 26, 23, 12.\n\n");
-    for (int i = 0; i < 22; i++)
+    for (int i = 0; i < 20; i++)
     {
-        for (int j = 0; j < 22; j++)
-            printf("%-3d", matrix[i][j]);
+        for (int j = 0; j < 20; j++)
+            printf("%-10d", matrix[i][j]);
         printf("\n");
     }
 
-    setup(0, 22);    
-    solve(0, 22);
-    int *tour = findOptimalTour(0, 22);
+    setup(0, 20);    
+    solve(0, 20);
+    int *tour = findOptimalTour(0, 20);
     printf("\nPath: \n");
-    for (int i = 0; i < 23; i++)
+    for (int i = 0; i < 21; i++)
     {
         printf("%d ", vertices[tour[i]]);
     }
 
-    printf("\nMincost: %d", sum(tour, 23));
+    printf("\nMincost: %d", sum(tour, 21));
 }
 
 int sum(int a[], int size)
@@ -110,7 +119,7 @@ int findMinCost(int start, int num_node)
 int* findOptimalTour(int start, int num_node)
 {
     int lastIndex = start;
-    int state = (1 << num_node) - 1; //End of state
+    int state = (1 << num_node) - 1; 
     int *tour = malloc(sizeof(int) * (num_node + 1));
     int newDist, prevDist;
     int index;
@@ -164,28 +173,20 @@ void solve(int start, int num_node)
     for (int r = 3; r <= num_node; r++)
     {
         size = factorial(num_node) / (factorial(r) * factorial(num_node - r));
-        // printf("\nr = %d", r);
-        // printf("\n------------size=%d", size);
-        // printf("creat");
-        // int* subset = (int*) malloc(sizeof(int) * size);
-        // printf("FAILLLLLL");
         combination(0, 0, r, num_node, subset);
         indx = 0;
         for (int i = 0; i < size; i++)
         {
-            // printf("\ni = %d", i);
             if (notIn(start, subset[i]))
                 continue;
             for (int next = 0; next < num_node; next++)
             {
-                // printf("\nnext = %d", next);
                 if (next == start || notIn(next, subset[i]))
                     continue;
                 state = subset[i] ^ (1 << next);
                 minDist = INFINITE;
                 for (int e = 0; e < num_node; e++)
                 {
-                    // printf("\ne = %d", e);
                     if (e == start || e == next || notIn(e, subset[i]))
                         continue;
                     newDistance = memo[e][state] + matrix[e][next];
@@ -195,8 +196,6 @@ void solve(int start, int num_node)
                 memo[next][subset[i]] = minDist;
             }
         }
-        // free(subset);
-        // subset = NULL;
     }
 }
 
@@ -230,15 +229,6 @@ void combination(int set, int at, int r, int num_node, int *subset)
     }
 }
 
-// int *combinations(int r, int num_node, int size)
-// {
-//     printf("creat");
-//     int *subset = malloc(sizeof(int) * size);
-//     combination(0, 0, r, num_node, subset);
-//     indx = 0;
-//     return subset;
-// }
-
 void distanceMatrix(int a[m][n])
 {
     for (int a = 0; a < m; a++)
@@ -251,12 +241,20 @@ void distanceMatrix(int a[m][n])
                 {
                     if (b == d)
                     {
-                        dist[a * n + b][c * n + d] = abs(a - c) * COL;
+                        dist[a * n + b][c * n + d] = abs(a - c) * COL + abs(a / g - c / g) * COL;
                     }
                     else
                     {
-                        dist[a * n + b][c * n + d] =
-                            min(abs(b - d) * ROW + (a + c) * COL + 2, abs(b - d) * ROW + abs(2 * m - a - c) * COL);
+                        if (a / g == c / g) {
+                            dist[a * n + b][c * n + d] =
+                                min(abs(b - d) * ROW + (a + c) * COL + 2, abs(b - d) * ROW + abs(2 * m - a - c) * COL);
+                        }
+                        else if (a / g < c / g) {
+                            dist[a * n + b][c * n + d] = (g - a % g) * COL + (c / g - a / g - 1) * 6 * COL + COL + (c % g) * COL + abs(b - d) * ROW; 
+                        }
+                        else {
+                            dist[a * n + b][c * n + d] = (a % g + 1) * COL + (a / g - c / g - 1) * 6 * COL + (g - c % g) * COL + abs(b - d) * ROW;
+                        }
                     }
                 }
             }
