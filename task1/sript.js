@@ -50,7 +50,7 @@ document.getElementById("dwn-dd").addEventListener(
     for (let i = 0; i < 25; i++) {
       node_data_text = node_data_text + data[i] + " ";
     }
-    var filename2 = "node_data.txt";
+    var filename2 = "datapoints.txt";
     download(filename2, node_data_text);
   },
   false

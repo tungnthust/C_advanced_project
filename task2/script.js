@@ -2,7 +2,7 @@ fetch("./sale_records.json").then(
   response => {
     response.json().then(
       data => {
-        console.log(data);
+        // console.log(data);
         if(data.length > 0){
           let temp = "";
           
