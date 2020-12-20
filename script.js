@@ -6,7 +6,7 @@ var coords;
 var distanceMatrix;
 var i, j;
 var countRoute = 4;
-var node_data_text;
+var node_data_text = "";
 var weight = new Array(40);
 
 // Initialize and add the map
@@ -33,7 +33,7 @@ function getPlacesAndDisplay() {
   coords = new Array(40);
   //Coordinate and weight of depot 
   coords[0] = { lat: 21.002666, lng: 105.833105 };
-  weight[0] = parseFloat((Math.random() * 2).toFixed(2))
+  weight[0] = 0;
 
   for (i = 1; i <= 39; i++) {
     coords[i] = { lat: latitude[i - 1], lng: longitude[i - 1] };
@@ -42,7 +42,7 @@ function getPlacesAndDisplay() {
   }
   addMarkerDepot(coords[0], weight[0]);
   // Display all places
-  for (i = 1; i < 24; i++) {
+  for (i = 1; i < 40; i++) {
     addMarker(coords[i], weight[i]);
   }
 
@@ -90,7 +90,7 @@ var route = new Array();
 // route[3] = [0, 31, 32, 33, 34, 35, 36, 37, 38, 39, 0];
 
 // Color for each route
-var color = ["red", "blue", "green", "yellow"];
+var color = ["#b5183a", "#114b78", "#109445", "#c98402", "#d95b9c"];
 
 const getDirection = (i, j) => {
   return sleep(500).then((v) => {

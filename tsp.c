@@ -1,17 +1,23 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-
+#include <string.h>
+#include <ctype.h>
 #define m 20
 #define n 11
 #define g 5
 #define COL 26
 #define ROW 60
 #define INFINITE 10000
-
-int subset[1000000];
+enum
+{
+    FAIL,
+    SUCCESS,
+    MAXLEN = 1000
+};
+int subset[5300000];
 int dist[m * n][m * n];
-short memo[m * n][1100000];
+short memo[25][34000000];
 int indx = -1;
 int matrix[50][50];
 int sum(int a[], int size);
@@ -25,70 +31,76 @@ int factorial(int a);
 void combination(int set, int at, int r, int num_node, int *subset);
 int *combinations(int r, int num_node, int size);
 void distanceMatrix(int a[m][n]);
-
+int vertices[25];
+void readData(char filename[]);
 int main()
 {
     int a[20][11] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},  
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
     distanceMatrix(a);
-    printf("Distance Matrix of all nodes: \n");
+    // printf("Distance Matrix of all nodes: \n");
 
-    for (int i = 0; i < m * n; i++)
+    // for (int i = 0; i < m * n; i++)
+    // {
+    //     for (int j = 0; j < m * n; j++)
+    //         printf("%-10d", dist[i][j]);
+    //     printf("\n");
+    // }
+    // int vertices[25] = {0, 3, 92, 188, 95, 77, 96, 19, 58, 119, 189, 153, 78, 123, 204, 62, 42, 174, 69, 112, 35, 140, 85, 199, 100};
+    readData("datapoints.txt");
+    // printf("\nFind shortest path to pick all items at nodes:\n3, 5, 26, 23, 12.\n");
+
+    for (int i = 0; i < 25; i++)
     {
-        for (int j = 0; j < m * n; j++)
-            printf("%-10d", dist[i][j]);
-        printf("\n");
-    }
-    int vertices[20] = {0, 96, 19, 58, 119, 189, 153, 78, 123, 204, 62, 42, 174, 69, 112, 35, 140, 85, 199, 100};
-
-    printf("\nFind shortest path to pick all items at nodes:\n3, 5, 26, 23, 12.\n");
-
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 25; j++)
         {
             matrix[i][j] = dist[vertices[i]][vertices[j]];
         }
     }
 
-    printf("Distance Matrix between 5 nodes:\n3, 5, 26, 23, 12.\n\n");
-    for (int i = 0; i < 20; i++)
+    // printf("Distance Matrix between 5 nodes:\n3, 5, 26, 23, 12.\n\n");
+    // for (int i = 0; i < 25; i++)
+    // {
+    //     for (int j = 0; j < 25; j++)
+    //         printf("%-10d", matrix[i][j]);
+    //     printf("\n");
+    // }
+
+    setup(0, 25);
+    solve(0, 25);
+    int *tour = findOptimalTour(0, 25);
+    FILE *fp; 
+    if( (fp= fopen("output_depot.txt", "a")) == NULL ){
+        printf("cannot open file");
+    }
+    printf("Path: \n");
+    for (int i = 0; i < 26; i++)
     {
-        for (int j = 0; j < 20; j++)
-            printf("%-10d", matrix[i][j]);
-        printf("\n");
+        printf("%d ", tour[i]);
+        fprintf(fp, "%-5d", tour[i]);
     }
 
-    setup(0, 20);    
-    solve(0, 20);
-    int *tour = findOptimalTour(0, 20);
-    printf("\nPath: \n");
-    for (int i = 0; i < 21; i++)
-    {
-        printf("%d ", vertices[tour[i]]);
-    }
-
-    printf("\nMincost: %d", sum(tour, 21));
+    printf("\nMincost: %d", sum(tour, 26));
 }
 
 int sum(int a[], int size)
@@ -116,10 +128,10 @@ int findMinCost(int start, int num_node)
     return minTourCost;
 }
 
-int* findOptimalTour(int start, int num_node)
+int *findOptimalTour(int start, int num_node)
 {
     int lastIndex = start;
-    int state = (1 << num_node) - 1; 
+    int state = (1 << num_node) - 1;
     int *tour = malloc(sizeof(int) * (num_node + 1));
     int newDist, prevDist;
     int index;
@@ -245,19 +257,41 @@ void distanceMatrix(int a[m][n])
                     }
                     else
                     {
-                        if (a / g == c / g) {
+                        if (a / g == c / g)
+                        {
                             dist[a * n + b][c * n + d] =
                                 min(abs(b - d) * ROW + (a + c) * COL + 2, abs(b - d) * ROW + abs(2 * m - a - c) * COL);
                         }
-                        else if (a / g < c / g) {
-                            dist[a * n + b][c * n + d] = (g - a % g) * COL + (c / g - a / g - 1) * 6 * COL + COL + (c % g) * COL + abs(b - d) * ROW; 
+                        else if (a / g < c / g)
+                        {
+                            dist[a * n + b][c * n + d] = (g - a % g) * COL + (c / g - a / g - 1) * 6 * COL + COL + (c % g) * COL + abs(b - d) * ROW;
                         }
-                        else {
+                        else
+                        {
                             dist[a * n + b][c * n + d] = (a % g + 1) * COL + (a / g - c / g - 1) * 6 * COL + (g - c % g) * COL + abs(b - d) * ROW;
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+void readData(char filename[])
+{
+    FILE *fin;
+    char str[MAXLEN];
+    int i, j;
+
+    if ((fin = fopen(filename, "r")) == NULL)
+    {
+        printf("cannot open file");
+    }
+    else
+    {
+        for (j = 0; j < 25; j++)
+        {
+            fscanf(fin, "%d,", &vertices[j]);
         }
     }
 }
