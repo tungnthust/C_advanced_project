@@ -126,7 +126,7 @@ int main()
     printf("Number of Customer: %d.\nTotal capacity of each vehicle: %d.\n\n", GRAPH_SIZE - 1, CAPACITY);
     printf("SOLUTION\n\n");
     FILE *fp; 
-    if( (fp= fopen("output_from_C_program.txt", "a")) == NULL ){
+    if( (fp= fopen("output_from_C_program.txt", "w")) == NULL ){
         printf("cannot open file");
     }
 
