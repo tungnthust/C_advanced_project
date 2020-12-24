@@ -31,13 +31,15 @@ function initMap() {
   //   zoom: 13,
   //   center: hanoi,
   // });
+  toggleloader(1);
+  toggleloader(2);
 }
 
 var address = new Array(40);
 address[0] = "DEPOT";
 
 const geocodeLatLng = (geocoder, coord, i) => {
-  return sleep(200).then((v) => {
+  return sleep(3000).then((v) => {
     geocoder.geocode({ location: coord}, (results, status) => {
       if (status === "OK") {
         if (results[0]) {
@@ -53,8 +55,8 @@ const geocodeLatLng = (geocoder, coord, i) => {
   })
 }
 
-
-function getPlacesAndDisplay() {
+async function getPlacesAndDisplay() {
+  toggleloader(1);
   latitude = new Array(39);
   longitude = new Array(39);
 
@@ -79,9 +81,10 @@ function getPlacesAndDisplay() {
   // Display all places
   for (i = 1; i < 40; i++) {
     addMarker(coords[i], weight[i]);
-    address[i] = 'abcd';
-    // const s = await geocodeLatLng(geocoder, coords[i], i);
+    // address[i] = 'abcd';
+    const s = await geocodeLatLng(geocoder, coords[i], i);
   }
+  toggleloader(1);
 
   function addMarker(coords, weight) {
     var contentString = "<h1>" + weight + " kg</h1>"
@@ -226,6 +229,7 @@ const getDist = (iter1, iter2) => {
 };
 
 async function getDistanceMatrix() {
+  toggleloader(2);
   try {
     let count;
     for (iter1 = 0; iter1 < 8; iter1++) {
@@ -233,9 +237,19 @@ async function getDistanceMatrix() {
         const x = await getDist(iter1, iter2);
       }
     }
+  toggleloader(2); 
   } catch (error) {
     console.log("Error");
   }
+}
+
+function toggleloader(i) {
+  var loader = document.getElementById("loader" + i);
+    if (loader.style.display === "none") {
+      loader.style.display = "inline-block";
+    } else {
+      loader.style.display = "none";
+    }
 }
 
 function download(filename, text) {
@@ -294,7 +308,7 @@ input.addEventListener('change', function(e) {
   const reader = new FileReader();
   reader.onload = function(){
       let lines = reader.result.split('\n');
-      countRoute = lines.length;
+      countRoute = lines.length - 1;
       for (let line=0; line<lines.length; line++){
         let nodes = lines[line].split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
         route[line] = new Array();          
@@ -360,8 +374,8 @@ function getResult() {
         row.appendChild(cell3);
         table.appendChild(row);
         load += weight[route[i][j]];
-        if( j < route[i].lenth - 1) {
-          distance += distanceMatrix[route[i][j]][route[i][j] + 1];
+        if( j < route[i].length - 1) {
+          distance += distanceMatrix[route[i][j]][route[i][j + 1]];
         } 
     }
     load = load.toFixed(2);
