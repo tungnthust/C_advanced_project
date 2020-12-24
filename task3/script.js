@@ -1,5 +1,6 @@
 var distanceMatrix_text;
 var map;
+var geocoder;
 var latitude;
 var longitude;
 var coords;
@@ -17,7 +18,41 @@ function initMap() {
     zoom: 13,
     center: hanoi,
   });
+  geocoder = new google.maps.Geocoder();
+  // map1 = new google.maps.Map(document.getElementById("map1"), {
+  //   zoom: 13,
+  //   center: hanoi,
+  // });
+  // map2 = new google.maps.Map(document.getElementById("map2"), {
+  //   zoom: 13,
+  //   center: hanoi,
+  // });
+  // map3 = new google.maps.Map(document.getElementById("map3"), {
+  //   zoom: 13,
+  //   center: hanoi,
+  // });
 }
+
+var address = new Array(40);
+address[0] = "DEPOT";
+
+const geocodeLatLng = (geocoder, coord, i) => {
+  return sleep(200).then((v) => {
+    geocoder.geocode({ location: coord}, (results, status) => {
+      if (status === "OK") {
+        if (results[0]) {
+          address[i] = results[0].formatted_address;
+        } else {
+          window.alert("No results found");
+        }
+      } else {
+        window.alert("Geocoder failed due to: " + status);
+      }
+    });
+
+  })
+}
+
 
 function getPlacesAndDisplay() {
   latitude = new Array(39);
@@ -44,6 +79,8 @@ function getPlacesAndDisplay() {
   // Display all places
   for (i = 1; i < 40; i++) {
     addMarker(coords[i], weight[i]);
+    address[i] = 'abcd';
+    // const s = await geocodeLatLng(geocoder, coords[i], i);
   }
 
   function addMarker(coords, weight) {
@@ -269,4 +306,76 @@ input.addEventListener('change', function(e) {
   reader.readAsText(input.files[0]);
 }
 , false)
+
+
+var veh;
+var load = 0;
+var distance = 0;
+var veh_container;
+function getResult() {
+  let headers = ['Order', 'Address', 'Demand'];
+  var vehicles = document.getElementById("routes");
+  for (let i = 0; i < countRoute; i++) {
+    veh_container = document.createElement("div");
+    var veh_button = document.createElement("button");
+    veh_button.innerHTML = "Vehicle " + i;
+    veh_button.id = i;
+    veh_button.onclick = function() {
+      var id = event.target.id;
+      var x = document.getElementById("vehicle_" + id);
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    };
+    veh_container.appendChild(veh_button);
+    veh = document.createElement("div");
+    veh.id = "vehicle_" + i;
+    veh.style.display = 'none';
+    let table = document.createElement("table");
+    let headerRow = document.createElement("tr");
+    
+    headers.forEach(headerText => {
+      let header = document.createElement('th');
+      let textNode = document.createTextNode(headerText);
+      header.appendChild(textNode);
+      headerRow.appendChild(header);
+    });
+    table.appendChild(headerRow);
+    for(let j = 0; j < route[i].length; j++) {
+        let row = document.createElement('tr');
+      
+        let cell1 = document.createElement('td');
+        let textNode1 = document.createTextNode(j);
+        cell1.appendChild(textNode1);
+        row.appendChild(cell1);
+        let cell2 = document.createElement('td');
+        let textNode2 = document.createTextNode(address[route[i][j]]);
+        cell2.appendChild(textNode2);
+        row.appendChild(cell2);
+        let cell3 = document.createElement('td');
+        let textNode3 = document.createTextNode(weight[route[i][j]]);
+        cell3.appendChild(textNode3);
+        row.appendChild(cell3);
+        table.appendChild(row);
+        load += weight[route[i][j]];
+        if( j < route[i].lenth - 1) {
+          distance += distanceMatrix[route[i][j]][route[i][j] + 1];
+        } 
+    }
+    load = load.toFixed(2);
+    veh.appendChild(table);
+    let totalload = document.createElement("P");
+    totalload.innerHTML = "Load: " + load + " kg.";
+    let totalDistance = document.createElement("P");
+    totalDistance.innerHTML = "Distance: " + distance + " km.";
+    veh.appendChild(totalload);
+    veh.appendChild(totalDistance);
+    veh_container.append(veh);
+    vehicles.appendChild(veh_container);
+    load = 0;
+    distance = 0;
+  }
+}
 

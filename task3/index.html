@@ -13,15 +13,20 @@
 <body>
     <div><h2>Vehicle Routing Application</h2></div>
     <div id="map"></div>
+    <!-- <div id="map1"></div>
+    <div id="map2"></div>
+    <div id="map3"></div> -->
         <input type='button' class="box getPlace" value="Get Places and Display" onclick="getPlacesAndDisplay()"></input>
         <input type='button' class="box getMaxtrix" value="Get Distance Matrix" onclick="getDistanceMatrix()"></input>
         <input type='button' class="box displayRoutes" value="Display all Routes" onclick="displayRoute()"></input>
+        <input type='button' class="box displayRoutes" value="Display Result" onclick="getResult()"></input>
     </div>
     <div>
         <input type="button" class="box downloadMatrix" id="dwn-btn" value="Download file Distance Matrix"/>
         <input type="button" class="box downloadDemands" id="dwn-dd" value="Download file Demands data"/>
         <input type="file" class="box upload" id="upload" value="Upload file output"/>
     </div>
+    <div id="routes"></div>
     <script src="script.js"></script>
 </body>
 </html>
