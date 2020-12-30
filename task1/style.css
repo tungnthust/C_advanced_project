@@ -1,7 +1,36 @@
-#myCanvas {
-  margin-left: 200px;
+html{
+  font-size: 62.5%;
 }
-#entry {
-  margin-top: 25px;
-  margin-left: 200px;
+
+body{
+  font-size: 1.6rem;
+}
+
+.title{
+  text-align: center;
+}
+
+.canvas{
+  width: 75%;
+  float: right;
+}
+
+.button{
+  width: 25%;
+  margin-top: 5rem;
+  float: left;
+}
+
+.box{
+  width: 25rem;
+  height: 5rem;
+  margin: 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.box:hover{
+  background-color: orange;
 }
