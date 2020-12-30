@@ -7,20 +7,21 @@
     <title>DEPOT</title>
   </head>
   <body>
-    <div id="entry"><h4>Entry</h4></div>
-    <canvas
+    <div class="button">
+      <input type='button' class="box getPlace" value="Get Random Data" onclick="getRandomData()"></input><br>
+      <input type="button" class="box downloadDemands" id="dwn-dd" value="Download file data points"/><br>
+      <input type='button' class="box display" value="Display all Routes" onclick="displayPath()"></input><br>
+      <input type="file" class="box upload" id="upload" value="Upload file output"/><br>
+    </div>
+    <div id="entry" class="canvas"><h4 class="title">Entry</h4>
+      <canvas
       id="myCanvas"
       width="1260"
       height="660"
       style="border: 1px solid #d3d3d3"
-    >
+      >
       Your browser does not support the HTML5 canvas tag.</canvas
-    >
-    <div>
-      <input type='button' class="box getPlace" value="Get Random Data" onclick="getRandomData()"></input>
-      <input type="button" class="box downloadDemands" id="dwn-dd" value="Download file data points"/>
-      <input type="file" class="box upload" id="upload" value="Upload file output"/>
-      <input type='button' value="Display all Routes" onclick="displayPath()"></input>
+      >
     </div>
     
 
