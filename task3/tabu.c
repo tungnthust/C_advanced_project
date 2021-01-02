@@ -63,7 +63,7 @@ void copyArray(int* a, int* b, int size);
 void removeElement(int* a, int size, int idx);
 int main()
 {
-    int TABU_Horizon = 10;
+    int TABU_Horizon = 5;
     cost = (float) 0;
     readDemand(q, "node_data.txt");
         
@@ -264,9 +264,9 @@ void TabuSearch(int TABU_Horizon) {
         int NodeID_G = RouteTo.array[SwapIndexB+1];
 
         
-        RandomDelay1 = rand() % 7;
-        RandomDelay2 = rand() % 7;
-        RandomDelay3 = rand() % 7;
+        RandomDelay1 = rand() % 5;
+        RandomDelay2 = rand() % 5;
+        RandomDelay3 = rand() % 5;
         TABU_Matrix[NodeIDBefore][SwapNode] = TABU_Horizon + RandomDelay1;
         TABU_Matrix[SwapNode][NodeIDAfter]  = TABU_Horizon + RandomDelay2 ;
         TABU_Matrix[NodeID_F][NodeID_G] = TABU_Horizon + RandomDelay3;

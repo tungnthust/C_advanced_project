@@ -26,17 +26,28 @@
             <div id="loader2" class="loader2"></div>
         </div>
         <div>
-            <input type='button' class="box displayRoutes" value="Display all Routes" onclick="displayRoute()"></input>
-            <input type='button' class="box displayRoutes" value="Display Result" onclick="getResult()"></input>
-
-        </div>
-        <div>
             <input type="button" class="box downloadMatrix" id="dwn-btn" value="Download file Distance Matrix" />
             <input type="button" class="box downloadDemands" id="dwn-dd" value="Download file Demands data" />
         </div>
-        <input type="file" class="box upload" id="upload" value="Upload file output" />
+        <div>
+            <input type='button' class="box displayRoutes" value="Get All Routes" onclick="displayRoute()"></input>
+            <input type='button' class="box displayRoutes" value="Display Result" onclick="getResult()"></input>
+        </div>
+        <input type="file" class="box_upload" id="upload" value="Upload file output" />
+        <div style="margin: 1.5rem; display: none;" id="checkbox_container">
+            <span>
+                <input type="checkbox" id="all_routes" name="all_routes" value="all_routes" onclick="showAllRoutes()">
+                <label for="all_routes"> Display All Routes</label>
+            </span>
+            <span>
+                <input type="checkbox" id="hide_markers" name="hide_markers" value="hide_markers" onclick="hideAllMarkers()">
+                <label for="hide_markers"> Hide Markers</label>
+            </span>
+
+        </div>
     </div>
     <div id="map" class="split right"></div>
+    <div id="routesButton"></div>
     <div id="routes"></div>
     <script src="script.js"></script>
 </body>
