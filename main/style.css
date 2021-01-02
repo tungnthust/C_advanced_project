@@ -17,13 +17,18 @@ body{
   color: white;
   font-size: 6rem;
   text-align: center;
-  padding-top: 10rem;
+  font-family: "Audiowide";
 }
 
 .big{
-  padding-top: 0rem;
-  font-size: 12rem;
+  /* padding-top: 0rem; */
+  font-size: 10rem;
   font-family: "Audiowide";
+}
+
+.member{
+  font-size: 4rem;
+  font-family: "Poppins";
 }
 
 .card-title, .btn, .btn-primary{

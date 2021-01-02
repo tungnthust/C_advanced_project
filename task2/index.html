@@ -4,32 +4,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Sorting</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-  <table class="table table-striped" text-align="center", border="1px">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Region</th>
-        <th>Country</th>
-        <th>Item Type</th>
-        <th>Sales Channel</th>
-        <th>Order Priority</th>
-        <th>Order Date</th>
-        <th>Order Id</th>
-        <th>Ship Date</th>
-        <th>Units Sold</th>
-        <th>Unit Price</th>
-        <th>Unit Cost</th>
-        <th>Total Revenue</th>
-        <th>Total Cost</th>
-        <th>Total Profit</th>
-      </tr>
-    </thead>
-    <tbody id="data"></tbody>
-  </table>
+  <div style="text-align: center" style="margin:20rem">
+    <h1 class="title">Using quicksort 2 ways to sort total profit of all orders</h1>
+    <button type="button" class="btn btn-primary" onclick="beforeSort()">Before sorting</button>
+    <button type="button" class="btn btn-primary" onclick="afterSort()">After sorting</button>
+    <input type="file" class="box_upload" id="upload" value="Upload file output" />
+  </div>
+  <table id="data" class="table table-dark table-striped " align="center", border="1px"></table>
   <script src="script.js"></script>
 </body>
 
