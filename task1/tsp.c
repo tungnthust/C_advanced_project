@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+
 #define m 20
 #define n 11
 #define g 5
@@ -34,7 +35,7 @@ void distanceMatrix(int a[m][n]);
 int vertices[25];
 void readData(char filename[]);
 int main()
-{
+{   
     int a[20][11] = {
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -58,18 +59,9 @@ int main()
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     };
     distanceMatrix(a);
-    // printf("Distance Matrix of all nodes: \n");
-
-    // for (int i = 0; i < m * n; i++)
-    // {
-    //     for (int j = 0; j < m * n; j++)
-    //         printf("%-10d", dist[i][j]);
-    //     printf("\n");
-    // }
-    // int vertices[25] = {0, 3, 92, 188, 95, 77, 96, 19, 58, 119, 189, 153, 78, 123, 204, 62, 42, 174, 69, 112, 35, 140, 85, 199, 100};
+  
     readData("datapoints.txt");
-    // printf("\nFind shortest path to pick all items at nodes:\n3, 5, 26, 23, 12.\n");
-
+    
     for (int i = 0; i < 25; i++)
     {
         for (int j = 0; j < 25; j++)
@@ -77,30 +69,24 @@ int main()
             matrix[i][j] = dist[vertices[i]][vertices[j]];
         }
     }
-
-    // printf("Distance Matrix between 5 nodes:\n3, 5, 26, 23, 12.\n\n");
-    // for (int i = 0; i < 25; i++)
-    // {
-    //     for (int j = 0; j < 25; j++)
-    //         printf("%-10d", matrix[i][j]);
-    //     printf("\n");
-    // }
-
+    printf("Executing program ...\n");
     setup(0, 25);
     solve(0, 25);
     int *tour = findOptimalTour(0, 25);
     FILE *fp; 
-    if( (fp= fopen("output_depot.txt", "a")) == NULL ){
+    if( (fp= fopen("output_depot.txt", "w")) == NULL ){
         printf("cannot open file");
     }
     printf("Path: \n");
     for (int i = 0; i < 26; i++)
     {
         printf("%d ", tour[i]);
-        fprintf(fp, "%-5d", tour[i]);
+        fprintf(fp, "%d ", tour[i]);
     }
 
     printf("\nMincost: %d", sum(tour, 26));
+
+    printf("\nProgram execute successfully. File \"output_depot.txt\" was created. Press Enter to exit program.");
 }
 
 int sum(int a[], int size)

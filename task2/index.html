@@ -2,24 +2,54 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorting</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js">
-  <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <title>VRP</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAwLFuSQ48tQEMP8MWcUU3mdROw0_PZE2U&callback=initMap">
+    </script>
 </head>
 
 <body>
-  <div style="text-align: center" style="margin:20rem">
-    <h1 class="title">Using quicksort 2 ways to sort total profit of all orders</h1>
-    <button type="button" class="btn btn-primary" onclick="beforeSort()">Before sorting</button>
-    <button type="button" class="btn btn-primary" onclick="afterSort()">After sorting</button>
-    <input type="file" class="box_upload" id="upload" value="Upload file output" />
-  </div>
-  <table id="data" class="table table-dark table-striped " align="center", border="1px"></table>
-  <script src="script.js"></script>
+    <div>
+        <h2>Vehicle Routing Application</h2>
+    </div>
+    <div class="split left">
+        <div>
+            <input type='button' class="box getPlace" value="Get Places and Display"
+                onclick="getPlacesAndDisplay()"></input>
+            <div id="loader1" class="loader1"></div>
+            <input type='button' class="box getMaxtrix" value="Get Distance Matrix"
+                onclick="getDistanceMatrix()"></input>
+            <div id="loader2" class="loader2"></div>
+        </div>
+        <div>
+            <input type="button" class="box downloadMatrix" id="dwn-btn" value="Download file Distance Matrix" />
+            <input type="button" class="box downloadDemands" id="dwn-dd" value="Download file Demands data" />
+        </div>
+        <div>
+            <input type='button' class="box displayRoutes" value="Get All Routes" onclick="displayRoute()"></input>
+            <input type='button' class="box displayRoutes" value="Display Result" onclick="getResult()"></input>
+        </div>
+        <input type="file" class="box_upload" id="upload" value="Upload file output" />
+        <div style="margin: 1.5rem; display: none;" id="checkbox_container">
+            <span>
+                <input type="checkbox" id="all_routes" name="all_routes" value="all_routes" onclick="showAllRoutes()">
+                <label for="all_routes"> Display All Routes</label>
+            </span>
+            <span>
+                <input type="checkbox" id="hide_markers" name="hide_markers" value="hide_markers" onclick="hideAllMarkers()">
+                <label for="hide_markers"> Hide Markers</label>
+            </span>
+
+        </div>
+        <div id="routesButton"></div>
+        <div id="routes"></div>
+    </div>
+    <div id="map" class="split right"></div>
+    <script src="script.js"></script>
 </body>
 
 </html>
